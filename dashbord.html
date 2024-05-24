@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .input-group button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .input-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- React.js library -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- React Components -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        function Dashboard() {
+            const [accounts, setAccounts] = useState([]);
+            const [posts, setPosts] = useState([]);
+
+            const addAccount = (account) => {
+                setAccounts([...accounts, account]);
+            };
+
+            const schedulePost = (post) => {
+                setPosts([...posts, post]);
+            };
+
+            return (
+                <div className="container">
+                    <h1>Social Media Dashboard</h1>
+                    <ManageAccounts addAccount={addAccount} accounts={accounts} />
+                    <SchedulePosts schedulePost={schedulePost} posts={posts} />
+                    <AnalyzeMetrics />
+                </div>
+            );
+        }
+
+        function ManageAccounts({ addAccount, accounts }) {
+            const [newAccount, setNewAccount] = useState("");
+
+            const handleAddAccount = () => {
+                if (newAccount) {
+                    addAccount(newAccount);
+                    setNewAccount("");
+                }
+            };
+
+            return (
+                <div className="card">
+                    <h2>Manage Accounts</h2>
+                    <div className="input-group">
+                        <label htmlFor="account">Account Name</label>
+                        <input 
+                            type="text" 
+                            id="account" 
+                            value={newAccount} 
+                            onChange={(e) => setNewAccount(e.target.value)} 
+                            placeholder="Enter account name" 
+                        />
+                    </div>
+                    <button onClick={handleAddAccount}>Add Account</button>
+                    <ul>
+                        {accounts.map((account, index) => (
+                            <li key={index}>{account}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        function SchedulePosts({ schedulePost, posts }) {
+            const [newPost, setNewPost] = useState("");
+
+            const handleSchedulePost = () => {
+                if (newPost) {
+                    schedulePost(newPost);
+                    setNewPost("");
+                }
+            };
+
+            return (
+                <div className="card">
+                    <h2>Schedule Posts</h2>
+                    <div className="input-group">
+                        <label htmlFor="post">Post Content</label>
+                        <input 
+                            type="text" 
+                            id="post" 
+                            value={newPost} 
+                            onChange={(e) => setNewPost(e.target.value)} 
+                            placeholder="Enter post content" 
+                        />
+                    </div>
+                    <button onClick={handleSchedulePost}>Schedule Post</button>
+                    <ul>
+                        {posts.map((post, index) => (
+                            <li key={index}>{post}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        function AnalyzeMetrics() {
+            const metrics = [
+                { platform: 'Twitter', engagement: 75 },
+                { platform: 'Facebook', engagement: 60 },
+                { platform: 'Instagram', engagement: 90 }
+            ];
+
+            return (
+                <div className="card">
+                    <h2>Analyze Engagement Metrics</h2>
+                    <ul>
+                        {metrics.map((metric, index) => (
+                            <li key={index}>{metric.platform}: {metric.engagement}% engagement</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        // Render the Dashboard component into the root element
+        ReactDOM.render(<Dashboard />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+
